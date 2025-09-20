@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/arachne_filesystem.dir/link.d CMakeFiles/arachne_filesystem.dir/src/main.cpp.o CMakeFiles/arachne_filesystem.dir/src/FileManager.cpp.o CMakeFiles/arachne_filesystem.dir/src/UI.cpp.o CMakeFiles/arachne_filesystem.dir/src/Input.cpp.o -o arachne_filesystem  -lcurses /usr/lib/x86_64-linux-gnu/libform.so
