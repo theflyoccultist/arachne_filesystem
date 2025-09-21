@@ -10,9 +10,17 @@ namespace fs = std::filesystem;
 
 class FileManager {
 public:
-  string get_filename(string path);
-  vector<string> list_dir(const string &path);
+  FileManager();
 
-  fs::path enter_directory(const fs::path &current, const string &selected);
-  fs::path go_up(const fs::path &current);
+  vector<string> list_dir(const string &path) const;
+
+  void enter_directory(const string &selected);
+  void go_up();
+
+  vector<string> current_files() const;
+  fs::path current_path() const;
+
+private:
+  fs::path current_folder;
+  vector<string> files;
 };

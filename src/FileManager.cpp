@@ -1,28 +1,33 @@
 #include "../include/FileManager.h"
+#include <filesystem>
 
-string FileManager::get_filename(string path) {
-  fs::path file_path = path;
-  string filename = file_path.filename().string();
-  return filename;
+FileManager::FileManager() {
+  current_folder = fs::current_path();
+  files = list_dir(current_folder.string());
 }
 
-vector<string> FileManager::list_dir(const string &path) {
+vector<string> FileManager::list_dir(const string &path) const {
   vector<string> list_of_entries;
   for (const auto &entry : fs::directory_iterator(path))
     list_of_entries.push_back(entry.path().string());
   return list_of_entries;
 }
 
-fs::path FileManager::enter_directory(const fs::path &current,
-                                      const string &selected) {
-  fs::path next = current / selected;
-  if (fs::is_directory(next))
-    return next;
-  return current;
+void FileManager::enter_directory(const string &selected) {
+  fs::path new_path = fs::path(selected);
+  if (fs::is_directory(new_path)) {
+    current_folder = new_path;
+    files = list_dir(current_folder.string());
+  }
 }
 
-fs::path FileManager::go_up(const fs::path &current) {
-  if (current.has_parent_path())
-    return current.parent_path();
-  return current;
+void FileManager::go_up() {
+  if (current_folder.has_parent_path()) {
+    current_folder = current_folder.parent_path();
+    files = list_dir(current_folder.string());
+  }
 }
+
+vector<string> FileManager::current_files() const { return files; }
+
+fs::path FileManager::current_path() const { return current_folder; }

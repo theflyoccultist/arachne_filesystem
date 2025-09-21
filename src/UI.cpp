@@ -1,4 +1,5 @@
 #include "../include/UI.h"
+#include <algorithm>
 #include <cstddef>
 #include <filesystem>
 #include <fstream>
@@ -48,25 +49,40 @@ void UI::draw_list(const vector<string> &files, const int &highl_index) {
 
     string prefix = is_dir ? "[DIR] " : "[FILE] ";
     string display_name = prefix + files[i];
-    mvprintw(i + 2, 0, "%s", display_name.c_str());
+    mvprintw(i + 4, 0, "%s", display_name.c_str());
 
     if (is_highlighted)
       attroff(A_REVERSE | COLOR_PAIR(color));
   }
 }
 
-void UI::display_file(const string &file) {
+void UI::open_file(const string &file) {
+  file_contents.clear();
+  scroll_offset = 0;
+
   if (fs::is_regular_file(file)) {
     std::ifstream f(file);
     if (f.is_open()) {
       string line;
-
-      int i = 0;
       while (std::getline(f, line)) {
-        mvprintw(i + 2, 0, "%s", line.c_str());
-        ++i;
+        file_contents.push_back(line);
       }
     }
     f.close();
+  } else {
+    file_contents.push_back("[Not a regular file]");
+  }
+}
+
+void UI::scroll_file(int delta) {
+  int max_offset = std::max(0, (int)file_contents.size() - (LINES - 5));
+  scroll_offset = std::clamp(scroll_offset + delta, 0, max_offset);
+}
+
+void UI::display_file() {
+  int max_lines = LINES - 5;
+  for (int i = 0;
+       i < max_lines && (i + scroll_offset) < (int)file_contents.size(); i++) {
+    mvprintw(i + 4, 0, "%s", file_contents[i + scroll_offset].c_str());
   }
 }

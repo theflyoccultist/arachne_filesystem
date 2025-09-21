@@ -1,59 +1,74 @@
 #include "../include/FileManager.h"
 #include "../include/UI.h"
-#include <filesystem>
 #include <ncurses.h>
 
-namespace fs = std::filesystem;
-
 int main() {
-  bool running = true;
-  bool show_file = false;
-  bool show_list = false;
-  int highl_index = 0;
-
   FileManager f;
-  std::string p = f.get_filename("/home/rin/work/test.txt");
-  fs::path current_folder = fs::current_path();
-  auto files = f.list_dir(current_folder.string());
-
   UI ui;
   ui.setup_UI(0);
   ui.initialize_colors();
+
+  bool running = true;
+  int highl_index = 0;
+
+  enum class Mode { Browsing, ViewingFile };
+  Mode mode = Mode::Browsing;
 
   while (running) {
     clear();
 
     mvprintw(1, 0, "Press q to quit.");
+    mvprintw(2, 0, "Current Folder: %s", f.current_path().c_str());
 
-    if (show_file && !show_list) {
-      show_list = !show_list;
-      ui.display_file(files[highl_index]);
-    } else if (show_list) {
+    if (mode == Mode::Browsing) {
+      auto files = f.current_files();
       ui.scroll_movement(files, highl_index);
       ui.draw_list(files, highl_index);
+    } else if (mode == Mode::ViewingFile) {
+      ui.display_file();
     }
 
     refresh();
 
     int ch = getch();
-    if (ch == 'q')
+    switch (ch) {
+    case 'q':
       running = false;
-    else if (ch == 'o')
-      show_file = !show_file;
-    else if (ch == 'l')
-      show_list = !show_list;
-    else if (ch == KEY_UP)
-      highl_index--;
-    else if (ch == KEY_DOWN)
-      highl_index++;
-    else if (ch == '\n') {
-      current_folder = f.enter_directory(current_folder, files[highl_index]);
-      files = f.list_dir(current_folder.string());
+      break;
+
+    case '\n':
+      f.enter_directory(f.current_files()[highl_index]);
       highl_index = 0;
-    } else if (ch == KEY_BACKSPACE) {
-      current_folder = f.go_up(current_folder);
-      files = f.list_dir(current_folder.string());
+      break;
+
+    case KEY_BACKSPACE:
+      if (mode == Mode::ViewingFile)
+        continue;
+      f.go_up();
       highl_index = 0;
+      break;
+
+    case 'o':
+      ui.open_file(f.current_files()[highl_index]);
+      mode = Mode::ViewingFile;
+      break;
+
+    case 'l':
+      mode = Mode::Browsing;
+      break;
+
+    case KEY_UP:
+      if (mode == Mode::Browsing)
+        highl_index--;
+      else if (mode == Mode::ViewingFile)
+        ui.scroll_file(-1);
+      break;
+
+    case KEY_DOWN:
+      if (mode == Mode::Browsing)
+        highl_index++;
+      else if (mode == Mode::ViewingFile)
+        ui.scroll_file(+1);
     }
   }
 
