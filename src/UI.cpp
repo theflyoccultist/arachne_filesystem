@@ -68,7 +68,6 @@ void UI::open_file(const string &file) {
         file_contents.push_back(line);
       }
     }
-    f.close();
   } else {
     file_contents.push_back("[Not a regular file]");
   }
