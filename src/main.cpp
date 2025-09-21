@@ -1,6 +1,9 @@
 #include "../include/FileManager.h"
 #include "../include/UI.h"
+#include <filesystem>
 #include <ncurses.h>
+
+namespace fs = std::filesystem;
 
 int main() {
   bool running = true;
@@ -10,7 +13,8 @@ int main() {
 
   FileManager f;
   std::string p = f.get_filename("/home/rin/work/test.txt");
-  std::vector<std::string> l = f.list_dir("/home/rin/work");
+  fs::path current_folder = fs::current_path();
+  auto files = f.list_dir(current_folder.string());
 
   UI ui;
   ui.setup_UI(0);
@@ -26,23 +30,32 @@ int main() {
     }
 
     if (show_list) {
-      ui.scroll_movement(l, highl_index);
-      ui.draw_list(l, highl_index);
+      ui.scroll_movement(files, highl_index);
+      ui.draw_list(files, highl_index);
     }
 
     refresh();
 
     int ch = getch();
-    if (ch == 'g')
-      show_file = !show_file;
-    if (ch == 'l')
-      show_list = !show_list;
     if (ch == 'q')
       running = false;
-    if (ch == KEY_UP)
+    else if (ch == 'g')
+      show_file = !show_file;
+    else if (ch == 'l')
+      show_list = !show_list;
+    else if (ch == KEY_UP)
       highl_index--;
-    if (ch == KEY_DOWN)
+    else if (ch == KEY_DOWN)
       highl_index++;
+    else if (ch == '\n') {
+      current_folder = f.enter_directory(current_folder, files[highl_index]);
+      files = f.list_dir(current_folder.string());
+      highl_index = 0;
+    } else if (ch == KEY_BACKSPACE) {
+      current_folder = f.go_up(current_folder);
+      files = f.list_dir(current_folder.string());
+      highl_index = 0;
+    }
   }
 
   endwin();

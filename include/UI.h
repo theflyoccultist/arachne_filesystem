@@ -10,6 +10,6 @@ class UI {
 public:
   void setup_UI(const int toggle_cursor);
   void initialize_colors();
-  void scroll_movement(const vector<string> &files, int &highl_idx);
-  void draw_list(const vector<string> &files, int highl_idx);
+  void scroll_movement(const vector<string> &files, int &highl_index);
+  void draw_list(const vector<string> &files, int &highl_index);
 };
