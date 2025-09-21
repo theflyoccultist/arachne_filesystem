@@ -10,3 +10,11 @@ cmake ..
 make
 ./arachne_filesystem
 ```
+
+## Controls
+
+- Enter key: open folder
+- Backspace: go to parent directory
+- o: toggle file viewer
+- l: toggle directory viewer
+- Key Up and Key Down: browse directory / browse current file
