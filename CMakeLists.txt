@@ -9,7 +9,6 @@ add_executable(arachne_filesystem
     src/main.cpp
     src/FileManager.cpp
     src/UI.cpp
-    src/Input.cpp
 )
 
 find_package(Curses REQUIRED)

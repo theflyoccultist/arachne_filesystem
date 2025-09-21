@@ -25,11 +25,10 @@ int main() {
 
     mvprintw(1, 0, "Press q to quit.");
 
-    if (show_file) {
-      mvprintw(0, 0, "%s", p.c_str());
-    }
-
-    if (show_list) {
+    if (show_file && !show_list) {
+      show_list = !show_list;
+      ui.display_file(files[highl_index]);
+    } else if (show_list) {
       ui.scroll_movement(files, highl_index);
       ui.draw_list(files, highl_index);
     }
@@ -39,7 +38,7 @@ int main() {
     int ch = getch();
     if (ch == 'q')
       running = false;
-    else if (ch == 'g')
+    else if (ch == 'o')
       show_file = !show_file;
     else if (ch == 'l')
       show_list = !show_list;
