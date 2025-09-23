@@ -87,7 +87,7 @@ void UI::display_file() {
 }
 
 string UI::display_dialog(const string &prompt) {
-  char input[80];
+  char input[256];
   WINDOW *win = newwin(3, 40, LINES / 2 - 1, COLS / 2 - 20);
   box(win, 0, 0);
   mvwprintw(win, 1, 1, "%s", prompt.c_str());

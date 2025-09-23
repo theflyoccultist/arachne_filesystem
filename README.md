@@ -1,6 +1,15 @@
 # arachne_filesystem
 A TUI file explorer using std::filesystem and ncurses
 
+## Controls
+
+- Enter key: open folder
+- Backspace: go to parent directory
+- o: toggle file viewer
+- l: toggle directory viewer
+- r: rename selected file / folder
+- Key Up and Key Down: browse directory / browse current file
+
 ## Setup
 
 ```bash
@@ -11,10 +20,3 @@ make
 ./arachne_filesystem
 ```
 
-## Controls
-
-- Enter key: open folder
-- Backspace: go to parent directory
-- o: toggle file viewer
-- l: toggle directory viewer
-- Key Up and Key Down: browse directory / browse current file
