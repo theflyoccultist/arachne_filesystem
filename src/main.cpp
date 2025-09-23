@@ -11,7 +11,7 @@ int main() {
   bool running = true;
   int highl_index = 0;
 
-  enum class Mode { Browsing, ViewingFile };
+  enum class Mode { Browsing, ViewingFile, Renaming };
   Mode mode = Mode::Browsing;
 
   while (running) {
@@ -20,12 +20,23 @@ int main() {
     mvprintw(1, 0, "Press q to quit.");
     mvprintw(2, 0, "Current Folder: %s", f.current_path().c_str());
 
-    if (mode == Mode::Browsing) {
-      auto files = f.current_files();
+    auto files = f.current_files();
+
+    switch (mode) {
+    case Mode::Browsing:
       ui.scroll_movement(files, highl_index);
       ui.draw_list(files, highl_index);
-    } else if (mode == Mode::ViewingFile) {
+      break;
+
+    case Mode::ViewingFile:
       ui.display_file();
+      break;
+
+    case Mode::Renaming:
+      string old_name = files[highl_index];
+      string new_name = ui.display_dialog("Rename to: ");
+      f.rename(old_name, new_name);
+      break;
     }
 
     refresh();
@@ -37,7 +48,7 @@ int main() {
       break;
 
     case '\n':
-      f.enter_directory(f.current_files()[highl_index]);
+      f.enter_directory(files[highl_index]);
       highl_index = 0;
       break;
 
@@ -49,12 +60,16 @@ int main() {
       break;
 
     case 'o':
-      ui.open_file(f.current_files()[highl_index]);
+      ui.open_file(files[highl_index]);
       mode = Mode::ViewingFile;
       break;
 
     case 'l':
       mode = Mode::Browsing;
+      break;
+
+    case 'r':
+      mode = Mode::Renaming;
       break;
 
     case KEY_UP:

@@ -85,3 +85,19 @@ void UI::display_file() {
     mvprintw(i + 4, 0, "%s", file_contents[i + scroll_offset].c_str());
   }
 }
+
+string UI::display_dialog(const string &prompt) {
+  char input[80];
+  WINDOW *win = newwin(3, 40, LINES / 2 - 1, COLS / 2 - 20);
+  box(win, 0, 0);
+  mvwprintw(win, 1, 1, "%s", prompt.c_str());
+  wrefresh(win);
+
+  echo();
+  wgetstr(win, input);
+  noecho();
+
+  delwin(win);
+  mvprintw(LINES - 5, 0, "File has been renamed to: %s", input);
+  return string(input);
+}

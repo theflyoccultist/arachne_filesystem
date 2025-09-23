@@ -18,6 +18,8 @@ public:
   void scroll_file(int delta);
   void display_file();
 
+  string display_dialog(const string &prompt);
+
 private:
   vector<string> file_contents;
   int scroll_offset = 0;
