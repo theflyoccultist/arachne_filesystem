@@ -30,8 +30,9 @@ void UI::initialize_colors() {
 }
 
 void UI::scroll_movement(const vector<string> &files, int &highl_index) {
-  if (highl_index < 0)
+  if (highl_index < 0) {
     highl_index = files.size() - 1;
+  }
   if (highl_index >= (int)files.size())
     highl_index = 0;
 }
@@ -98,6 +99,7 @@ string UI::display_dialog(const string &prompt) {
   noecho();
 
   delwin(win);
-  mvprintw(LINES - 5, 0, "File has been renamed to: %s", input);
+  mvprintw(LINES - 6, 0, "File has been renamed to: %s", input);
+  mvprintw(LINES - 5, 0, "Press 'l' to go back to the directory list.");
   return string(input);
 }

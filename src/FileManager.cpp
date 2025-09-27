@@ -32,6 +32,7 @@ void FileManager::go_up() {
 void FileManager::rename(const string &old_name, const string &new_name) {
   try {
     fs::rename(current_folder / old_name, current_folder / new_name);
+    files = list_dir(current_folder.string());
   } catch (fs::filesystem_error const &ex) {
     std::cout << ex.code().message() << "\n";
   }

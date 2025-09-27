@@ -1,0 +1,9 @@
+- Bug fixes:
+  -   In directories with a lot of files and folders, the menu does not behave as expected (go to the bottom of the directory list)
+
+- Upcoming Features:
+  -   File/dir creation (mkdir, touch) with a little input dialog.
+  -   Deletion with a confirmation dialog.
+  -   Copy / Move files between dirs (with a buffer for “selected item”).
+  -   Search / filter inside the current directory.
+  -   Basic status bar (show current path, file size, perms).
