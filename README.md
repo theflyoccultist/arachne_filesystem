@@ -8,7 +8,7 @@ A TUI file explorer using std::filesystem and ncurses
 - o: toggle file viewer
 - l: toggle directory viewer
 - r: rename selected file / folder. Leave the field empty and press Enter to cancel renaming.
-- s: display individual entry size.
+- s: display selected entry size (in KB or MB).
 - Key Up and Key Down: browse directory / browse current file
 
 ## Setup

@@ -1,8 +1,5 @@
 #include "../include/UI.h"
-#include "../include/FileManager.h"
 #include <algorithm>
-#include <cstddef>
-#include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -10,7 +7,6 @@
 #include <string>
 
 namespace fs = std::filesystem;
-FileManager f;
 
 void UI::setup_UI(const int toggle_cursor) {
   initscr();
@@ -51,8 +47,7 @@ void UI::draw_list(const vector<string> &files, const int &highl_index) {
     if (is_highlighted)
       attron(A_REVERSE | COLOR_PAIR(color));
 
-    string file_type = is_dir ? "[DIR] " : "[FILE] ";
-    string prefix = file_type;
+    string prefix = is_dir ? "[DIR] " : "[FILE] ";
 
     string display_name = prefix + files[i];
     mvprintw(i + 4, 0, "%s", display_name.c_str());
