@@ -37,7 +37,7 @@ void UI::scroll_movement(const vector<string> &files, int &highl_index) {
 }
 
 void UI::draw_list(const vector<string> &files, const int &highl_index) {
-  for (size_t i = 0; i < files.size(); i++) {
+  for (int i = 0; i < (int)files.size(); i++) {
     fs::path entry_path(files[i]);
     bool is_dir = fs::is_directory(entry_path);
 
