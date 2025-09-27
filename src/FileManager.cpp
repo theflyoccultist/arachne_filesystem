@@ -38,6 +38,21 @@ void FileManager::rename(const string &old_name, const string &new_name) {
   }
 }
 
+double FileManager::get_size(const fs::path &path) {
+  if (fs::is_regular_file(path)) {
+    return fs::file_size(path) / 1024.0;
+  } else if (fs::is_directory(path)) {
+    double total = 0;
+    for (auto const &entry : fs::recursive_directory_iterator(path)) {
+      if (entry.is_regular_file()) {
+        total += fs::file_size(entry);
+      }
+    }
+    return total / 1024.0;
+  }
+  return 0.0;
+}
+
 vector<string> FileManager::current_files() const { return files; }
 
 fs::path FileManager::current_path() const { return current_folder; }

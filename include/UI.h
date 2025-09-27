@@ -20,6 +20,8 @@ public:
 
   string display_dialog(const string &prompt);
 
+  void display_size(const string &path, const double &size);
+
 private:
   vector<string> file_contents;
   int scroll_offset = 0;

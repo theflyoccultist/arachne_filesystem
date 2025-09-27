@@ -11,7 +11,7 @@ int main() {
   bool running = true;
   int highl_index = 0;
 
-  enum class Mode { Browsing, ViewingFile, Renaming };
+  enum class Mode { Browsing, ViewingFile, Renaming, ViewingSize };
   Mode mode = Mode::Browsing;
 
   while (running) {
@@ -32,10 +32,15 @@ int main() {
       ui.display_file();
       break;
 
-    case Mode::Renaming:
+    case Mode::Renaming: {
       string old_name = files[highl_index];
       string new_name = ui.display_dialog("Rename to: ");
       f.rename(old_name, new_name);
+      break;
+    }
+
+    case Mode::ViewingSize:
+      ui.display_size(files[highl_index], f.get_size(files[highl_index]));
       break;
     }
 
@@ -70,6 +75,10 @@ int main() {
 
     case 'r':
       mode = Mode::Renaming;
+      break;
+
+    case 's':
+      mode = Mode::ViewingSize;
       break;
 
     case KEY_UP:

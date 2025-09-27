@@ -1,6 +1,8 @@
 #include "../include/UI.h"
+#include "../include/FileManager.h"
 #include <algorithm>
 #include <cstddef>
+#include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -8,6 +10,7 @@
 #include <string>
 
 namespace fs = std::filesystem;
+FileManager f;
 
 void UI::setup_UI(const int toggle_cursor) {
   initscr();
@@ -48,7 +51,9 @@ void UI::draw_list(const vector<string> &files, const int &highl_index) {
     if (is_highlighted)
       attron(A_REVERSE | COLOR_PAIR(color));
 
-    string prefix = is_dir ? "[DIR] " : "[FILE] ";
+    string file_type = is_dir ? "[DIR] " : "[FILE] ";
+    string prefix = file_type;
+
     string display_name = prefix + files[i];
     mvprintw(i + 4, 0, "%s", display_name.c_str());
 
@@ -88,18 +93,35 @@ void UI::display_file() {
 }
 
 string UI::display_dialog(const string &prompt) {
-  char input[256];
+  char buf[256];
+  buf[0] = '\0';
+
   WINDOW *win = newwin(3, 40, LINES / 2 - 1, COLS / 2 - 20);
   box(win, 0, 0);
   mvwprintw(win, 1, 1, "%s", prompt.c_str());
   wrefresh(win);
 
   echo();
-  wgetstr(win, input);
+  wgetnstr(win, buf, sizeof(buf) - 1);
   noecho();
 
   delwin(win);
-  mvprintw(LINES - 6, 0, "File has been renamed to: %s", input);
+
+  string input(buf);
+
+  if (input.empty()) {
+    mvprintw(LINES - 6, 0, "File renaming has been canceled.");
+  } else {
+    mvprintw(LINES - 6, 0, "File has been renamed to: %s", input.c_str());
+  }
+
   mvprintw(LINES - 5, 0, "Press 'l' to go back to the directory list.");
-  return string(input);
+  return input;
+}
+
+void UI::display_size(const string &path, const double &size) {
+  string file_size;
+  (size < 1024.0) ? file_size = std::to_string(size) + " KB"
+                  : file_size = std::to_string(size / 1024.0) + " MB";
+  mvprintw(LINES - 6, 0, "SIZE OF %s : %s", path.c_str(), file_size.c_str());
 }
