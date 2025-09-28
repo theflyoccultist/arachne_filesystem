@@ -17,7 +17,6 @@ public:
   void enter_directory(const string &selected);
   void go_up();
   void rename(const string &old_name, const string &new_name);
-  double get_size(const fs::path &path);
 
   vector<string> current_files() const;
   fs::path current_path() const;

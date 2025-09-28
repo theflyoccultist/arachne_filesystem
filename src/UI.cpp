@@ -118,5 +118,14 @@ void UI::display_size(const string &path, const double &size) {
   string file_size;
   (size < 1024.0) ? file_size = std::to_string(size) + " KB"
                   : file_size = std::to_string(size / 1024.0) + " MB";
-  mvprintw(LINES - 6, 0, "SIZE OF %s : %s", path.c_str(), file_size.c_str());
+  mvprintw(LINES - 7, 0, "SIZE OF %s : %s", path.c_str(), file_size.c_str());
+}
+
+void UI::display_perms(const string &path, const string &perms) {
+  mvprintw(LINES - 6, 0, "%s HAS THOSE PERMS: %s", path.c_str(), perms.c_str());
+}
+
+void UI::display_mtime(const string &path, const string &time) {
+  mvprintw(LINES - 5, 0, "LAST MODIFIED TIME OF %s : %s", path.c_str(),
+           time.c_str());
 }

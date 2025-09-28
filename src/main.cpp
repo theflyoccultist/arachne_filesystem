@@ -1,9 +1,12 @@
 #include "../include/FileManager.h"
+#include "../include/FileStats.h"
 #include "../include/UI.h"
 #include <ncurses.h>
 
 int main() {
   FileManager f;
+  FileStats s;
+
   UI ui;
   ui.setup_UI(0);
   ui.initialize_colors();
@@ -11,7 +14,7 @@ int main() {
   bool running = true;
   int highl_index = 0;
 
-  enum class Mode { Browsing, ViewingFile, Renaming, ViewingSize };
+  enum class Mode { Browsing, ViewingFile, Renaming, ViewingStats };
   Mode mode = Mode::Browsing;
 
   while (running) {
@@ -39,8 +42,10 @@ int main() {
       break;
     }
 
-    case Mode::ViewingSize:
-      ui.display_size(files[highl_index], f.get_size(files[highl_index]));
+    case Mode::ViewingStats:
+      ui.display_size(files[highl_index], s.get_size(files[highl_index]));
+      ui.display_perms(files[highl_index], s.get_perms(files[highl_index]));
+      ui.display_mtime(files[highl_index], s.get_mtime(files[highl_index]));
       break;
     }
 
@@ -58,7 +63,7 @@ int main() {
       break;
 
     case KEY_BACKSPACE:
-      if (mode == Mode::ViewingFile)
+      if (mode != Mode::Browsing)
         continue;
       f.go_up();
       highl_index = 0;
@@ -78,7 +83,7 @@ int main() {
       break;
 
     case 's':
-      mode = Mode::ViewingSize;
+      mode = Mode::ViewingStats;
       break;
 
     case KEY_UP:

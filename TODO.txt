@@ -6,6 +6,3 @@
   -   Deletion with a confirmation dialog.
   -   Copy / Move files between dirs (with a buffer for “selected item”).
   -   Search / filter inside the current directory.
-  -   Basic status bar has : show current path, file size.
-      To add :
-      - modified time, permissions

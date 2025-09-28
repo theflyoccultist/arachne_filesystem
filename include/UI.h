@@ -21,6 +21,8 @@ public:
   string display_dialog(const string &prompt);
 
   void display_size(const string &path, const double &size);
+  void display_perms(const string &path, const string &perms);
+  void display_mtime(const string &path, const string &time);
 
 private:
   vector<string> file_contents;
