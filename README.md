@@ -8,10 +8,10 @@ A TUI file explorer using std::filesystem and ncurses
 - o: toggle file viewer
 - l: toggle directory viewer
 - r: rename selected file / folder. Leave the field empty and press Enter to cancel renaming.
-- s: display selected entry size (in KB or MB).
+- s: file status: display selected entry size (in KB or MB), permissions and modified time.
 - Key Up and Key Down: browse directory / browse current file
 
-## Setup
+## Quick setup for testing
 
 ```bash
 git clone https://github.com/theflyoccultist/arachne_filesystem.git
@@ -21,3 +21,8 @@ make
 ./arachne_filesystem
 ```
 
+## Installation
+
+```bash
+sudo cmake --install build
+```
