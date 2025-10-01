@@ -90,6 +90,7 @@ int main() {
     case KEY_UP:
       if (mode == Mode::Browsing) {
         highl_index--;
+        ui.scroll_list(-1, files, highl_index);
       } else if (mode == Mode::ViewingFile) {
         ui.scroll_file(-1);
       }
@@ -98,6 +99,7 @@ int main() {
     case KEY_DOWN:
       if (mode == Mode::Browsing) {
         highl_index++;
+        ui.scroll_list(+1, files, highl_index);
       } else if (mode == Mode::ViewingFile) {
         ui.scroll_file(+1);
       }

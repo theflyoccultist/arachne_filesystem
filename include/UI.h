@@ -12,7 +12,7 @@ public:
   void initialize_colors();
 
   void display_dir(const vector<string> &files, int &highl_index);
-
+  void scroll_list(int delta, const vector<string> &files, int highl_index);
   void draw_list(const vector<string> &files, const int &highl_index);
 
   void open_file(const string &file);
@@ -28,5 +28,6 @@ public:
 
 private:
   vector<string> file_contents;
-  int scroll_offset = 0;
+  int file_offset = 0;
+  int list_offset = 0;
 };

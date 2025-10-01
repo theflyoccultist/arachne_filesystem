@@ -5,6 +5,7 @@
 #include <iostream>
 #include <ncurses.h>
 #include <string>
+#include <vector>
 
 namespace fs = std::filesystem;
 
@@ -30,24 +31,39 @@ void UI::initialize_colors() {
 
 void UI::display_dir(const vector<string> &files, int &highl_index) {
   if (highl_index < 0) {
-    highl_index = files.size() - 1;
-  } else if (highl_index >= (int)files.size())
     highl_index = 0;
+  } else if (highl_index >= (int)files.size())
+    highl_index = (int)files.size() - 1;
+}
+
+void UI::scroll_list(int delta, const vector<string> &files, int highl_index) {
+  int max_lines = LINES - 5;
+  if (highl_index < list_offset) {
+    list_offset = highl_index;
+  } else if (highl_index >= list_offset + max_lines) {
+    list_offset = highl_index - max_lines;
+  }
+
+  int max_offset = std::max(0, (int)files.size() - max_lines);
+  list_offset = std::clamp(list_offset + delta, 0, max_offset);
 }
 
 void UI::draw_list(const vector<string> &files, const int &highl_index) {
-  for (int i = 0; i < (int)files.size(); i++) {
-    fs::path entry_path(files[i]);
+  for (int i = 0; i < (LINES - 5) && (i + list_offset) < (int)files.size();
+       i++) {
+    int idx = i + list_offset;
+
+    fs::path entry_path(files[idx]);
     bool is_dir = fs::is_directory(entry_path);
 
-    bool is_highlighted = (i == highl_index);
+    bool is_highlighted = (idx == highl_index);
     int color = (is_highlighted ? (is_dir ? 2 : 1) : 0);
 
     if (is_highlighted)
       attron(A_REVERSE | COLOR_PAIR(color));
 
     string prefix = is_dir ? "[DIR] " : "[FILE] ";
-    string display_name = prefix + files[i];
+    string display_name = prefix + files[idx];
 
     mvprintw(i + 4, 0, "%s", display_name.c_str());
 
@@ -58,7 +74,7 @@ void UI::draw_list(const vector<string> &files, const int &highl_index) {
 
 void UI::open_file(const string &file) {
   file_contents.clear();
-  scroll_offset = 0;
+  file_offset = 0;
 
   if (fs::is_regular_file(file)) {
     std::ifstream f(file);
@@ -75,14 +91,14 @@ void UI::open_file(const string &file) {
 
 void UI::scroll_file(int delta) {
   int max_offset = std::max(0, (int)file_contents.size() - (LINES - 5));
-  scroll_offset = std::clamp(scroll_offset + delta, 0, max_offset);
+  file_offset = std::clamp(file_offset + delta, 0, max_offset);
 }
 
 void UI::display_file() {
   int max_lines = LINES - 5;
   for (int i = 0;
-       i < max_lines && (i + scroll_offset) < (int)file_contents.size(); i++) {
-    mvprintw(i + 4, 0, "%s", file_contents[i + scroll_offset].c_str());
+       i < max_lines && (i + file_offset) < (int)file_contents.size(); i++) {
+    mvprintw(i + 4, 0, "%s", file_contents[i + file_offset].c_str());
   }
 }
 
