@@ -31,8 +31,7 @@ void UI::initialize_colors() {
 void UI::display_dir(const vector<string> &files, int &highl_index) {
   if (highl_index < 0) {
     highl_index = files.size() - 1;
-  }
-  if (highl_index >= (int)files.size())
+  } else if (highl_index >= (int)files.size())
     highl_index = 0;
 }
 
@@ -48,8 +47,8 @@ void UI::draw_list(const vector<string> &files, const int &highl_index) {
       attron(A_REVERSE | COLOR_PAIR(color));
 
     string prefix = is_dir ? "[DIR] " : "[FILE] ";
-
     string display_name = prefix + files[i];
+
     mvprintw(i + 4, 0, "%s", display_name.c_str());
 
     if (is_highlighted)

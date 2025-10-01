@@ -88,17 +88,19 @@ int main() {
       break;
 
     case KEY_UP:
-      if (mode == Mode::Browsing)
+      if (mode == Mode::Browsing) {
         highl_index--;
-      else if (mode == Mode::ViewingFile)
+      } else if (mode == Mode::ViewingFile) {
         ui.scroll_file(-1);
+      }
       break;
 
     case KEY_DOWN:
-      if (mode == Mode::Browsing)
+      if (mode == Mode::Browsing) {
         highl_index++;
-      else if (mode == Mode::ViewingFile)
+      } else if (mode == Mode::ViewingFile) {
         ui.scroll_file(+1);
+      }
     }
   }
 

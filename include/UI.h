@@ -12,6 +12,7 @@ public:
   void initialize_colors();
 
   void display_dir(const vector<string> &files, int &highl_index);
+
   void draw_list(const vector<string> &files, const int &highl_index);
 
   void open_file(const string &file);
