@@ -28,7 +28,7 @@ void UI::initialize_colors() {
   init_pair(2, COLOR_CYAN, COLOR_BLACK);
 }
 
-void UI::scroll_movement(const vector<string> &files, int &highl_index) {
+void UI::display_dir(const vector<string> &files, int &highl_index) {
   if (highl_index < 0) {
     highl_index = files.size() - 1;
   }

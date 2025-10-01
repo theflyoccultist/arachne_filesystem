@@ -27,7 +27,7 @@ int main() {
 
     switch (mode) {
     case Mode::Browsing:
-      ui.scroll_movement(files, highl_index);
+      ui.display_dir(files, highl_index);
       ui.draw_list(files, highl_index);
       break;
 

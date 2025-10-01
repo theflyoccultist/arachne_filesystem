@@ -1,4 +1,5 @@
 #include "../include/FileManager.h"
+#include <algorithm>
 #include <filesystem>
 #include <iostream>
 
@@ -11,6 +12,7 @@ vector<string> FileManager::list_dir(const string &path) const {
   vector<string> list_of_entries;
   for (const auto &entry : fs::directory_iterator(path))
     list_of_entries.push_back(entry.path().string());
+  std::sort(list_of_entries.begin(), list_of_entries.end());
   return list_of_entries;
 }
 
