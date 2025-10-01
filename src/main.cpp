@@ -43,9 +43,10 @@ int main() {
     }
 
     case Mode::ViewingStats:
-      ui.display_size(files[highl_index], s.get_size(files[highl_index]));
-      ui.display_perms(files[highl_index], s.get_perms(files[highl_index]));
-      ui.display_mtime(files[highl_index], s.get_mtime(files[highl_index]));
+      ui.display_path(f.current_path().c_str());
+      ui.display_size(s.get_size(files[highl_index]));
+      ui.display_perms(s.get_perms(files[highl_index]));
+      ui.display_mtime(s.get_mtime(files[highl_index]));
       break;
     }
 
