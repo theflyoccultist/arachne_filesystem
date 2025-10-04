@@ -14,18 +14,22 @@ int main() {
   bool running = true;
   int highl_index = 0;
 
-  enum class Mode { Browsing, ViewingFile, Renaming, ViewingStats };
+  enum class Mode { Help, Browsing, ViewingFile, Renaming, ViewingStats };
   Mode mode = Mode::Browsing;
 
   while (running) {
     clear();
 
-    mvprintw(1, 0, "Press q to quit.");
+    mvprintw(1, 0, "Press q to quit, h to display help.");
     mvprintw(2, 0, "Current Folder: %s", f.current_path().c_str());
 
     auto files = f.current_files();
 
     switch (mode) {
+    case Mode::Help:
+      ui.display_help();
+      break;
+
     case Mode::Browsing:
       ui.display_dir(files, highl_index);
       ui.draw_list(files, highl_index);
@@ -55,6 +59,7 @@ int main() {
 
     int ch = getch();
     switch (ch) {
+
     case 'q':
       running = false;
       break;
@@ -64,6 +69,10 @@ int main() {
       highl_index = 0;
       break;
     }
+
+    case 'h':
+      mode = Mode::Help;
+      break;
 
     case KEY_BACKSPACE:
       if (mode != Mode::Browsing)

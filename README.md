@@ -5,6 +5,7 @@ A TUI file explorer using std::filesystem and ncurses
 
 - Enter key: open folder
 - Backspace: go to parent directory
+- h: display help
 - o: toggle file viewer
 - l: toggle directory viewer
 - r: rename selected file / folder. Leave the field empty and press Enter to cancel renaming.

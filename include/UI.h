@@ -11,6 +11,8 @@ public:
   void setup_UI(const int toggle_cursor);
   void initialize_colors();
 
+  void display_help();
+
   void display_dir(const vector<string> &files, int &highl_index);
   void scroll_list(int delta, const vector<string> &files, int highl_index);
   void draw_list(const vector<string> &files, const int &highl_index);

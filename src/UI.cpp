@@ -27,6 +27,18 @@ void UI::initialize_colors() {
   init_pair(2, COLOR_CYAN, COLOR_BLACK);
 }
 
+void UI::display_help() {
+  mvprintw(4, 0, "Enter key: open selected folder");
+  mvprintw(5, 0, "Backspace: go to parent directory");
+  mvprintw(6, 0, "Key Up / Down: browse file / directory");
+  mvprintw(7, 0, "h: display help");
+  mvprintw(8, 0, "o: toggle file viewer");
+  mvprintw(9, 0, "l: list directory");
+  mvprintw(10, 0, "r: rename selected file / directory");
+  mvprintw(11, 0, "s: display file / directory stats");
+  mvprintw(12, 0, "q: quit app");
+}
+
 void UI::display_dir(const vector<string> &files, int &highl_index) {
   if (highl_index < 0) {
     highl_index = 0;

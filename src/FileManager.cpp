@@ -15,6 +15,7 @@ vector<string> FileManager::list_dir(const string &path) const {
   if (ec) {
     list_of_entries.push_back("[Error] " + ec.message());
   }
+
   for (const auto &entry : it)
     list_of_entries.push_back(entry.path().string());
 
