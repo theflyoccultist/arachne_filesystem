@@ -1,7 +1,6 @@
 #include "../include/FileManager.h"
 #include <algorithm>
-#include <filesystem>
-#include <iostream>
+#include <system_error>
 
 FileManager::FileManager() {
   current_folder = fs::current_path();
@@ -10,8 +9,15 @@ FileManager::FileManager() {
 
 vector<string> FileManager::list_dir(const string &path) const {
   vector<string> list_of_entries;
-  for (const auto &entry : fs::directory_iterator(path))
+  std::error_code ec;
+  fs::directory_iterator it(path, ec);
+
+  if (ec) {
+    list_of_entries.push_back("[Error] " + ec.message());
+  }
+  for (const auto &entry : it)
     list_of_entries.push_back(entry.path().string());
+
   std::sort(list_of_entries.begin(), list_of_entries.end());
   return list_of_entries;
 }
@@ -31,12 +37,13 @@ void FileManager::go_up() {
   }
 }
 
-void FileManager::rename(const string &old_name, const string &new_name) {
+string FileManager::rename(const string &old_name, const string &new_name) {
   try {
     fs::rename(current_folder / old_name, current_folder / new_name);
     files = list_dir(current_folder.string());
+    return "File renamed successfully.";
   } catch (fs::filesystem_error const &ex) {
-    std::cout << ex.code().message() << "\n";
+    return ex.code().message();
   }
 }
 

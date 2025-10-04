@@ -4,8 +4,6 @@
 #include <fstream>
 #include <iostream>
 #include <ncurses.h>
-#include <string>
-#include <vector>
 
 namespace fs = std::filesystem;
 
@@ -147,3 +145,5 @@ void UI::display_perms(const string &perms) {
 void UI::display_mtime(const string &time) {
   mvprintw(LINES - 5, 0, "Last modified time: %s", time.c_str());
 }
+
+void UI::show_status(const string &msg) { mvprintw(3, 0, "%s", msg.c_str()); }

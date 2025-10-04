@@ -38,7 +38,8 @@ int main() {
     case Mode::Renaming: {
       string old_name = files[highl_index];
       string new_name = ui.display_dialog("Rename to: ");
-      f.rename(old_name, new_name);
+      auto msg = f.rename(old_name, new_name);
+      ui.show_status(msg);
       break;
     }
 
@@ -58,10 +59,11 @@ int main() {
       running = false;
       break;
 
-    case '\n':
+    case '\n': {
       f.enter_directory(files[highl_index]);
       highl_index = 0;
       break;
+    }
 
     case KEY_BACKSPACE:
       if (mode != Mode::Browsing)
