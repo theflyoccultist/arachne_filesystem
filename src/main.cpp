@@ -20,10 +20,11 @@ int main() {
     Help,
     Browsing,
     ViewingFile,
-    Renaming,
     ViewingStats,
     CreateFile,
-    CreateDirectory
+    CreateDirectory,
+    Renaming,
+    Removing
   };
   Mode mode = Mode::Browsing;
 
@@ -47,6 +48,13 @@ int main() {
 
     case Mode::ViewingFile:
       ui.display_file();
+      break;
+
+    case Mode::ViewingStats:
+      ui.display_path(f.current_path().c_str());
+      ui.display_size(s.get_size(files[highl_index]));
+      ui.display_perms(s.get_perms(files[highl_index]));
+      ui.display_mtime(s.get_mtime(files[highl_index]));
       break;
 
     case Mode::CreateFile: {
@@ -77,12 +85,18 @@ int main() {
       break;
     }
 
-    case Mode::ViewingStats:
-      ui.display_path(f.current_path().c_str());
-      ui.display_size(s.get_size(files[highl_index]));
-      ui.display_perms(s.get_perms(files[highl_index]));
-      ui.display_mtime(s.get_mtime(files[highl_index]));
-      break;
+    case Mode::Removing: {
+      dialog.confirm_removal(files[highl_index]);
+
+      int ch = getch();
+      if (ch == 'Y') {
+        auto msg = f.remove(files[highl_index]);
+        mvprintw(LINES - 6, 0, "%s", msg.c_str());
+      } else {
+        mvprintw(LINES - 6, 0, "Deletion canceled.");
+      }
+      mvprintw(LINES - 5, 0, "Press 'l' to go back to the directory list.");
+    }
     }
 
     refresh();
@@ -116,6 +130,10 @@ int main() {
       mode = Mode::ViewingFile;
       break;
 
+    case 's':
+      mode = Mode::ViewingStats;
+      break;
+
     case 'l':
       mode = Mode::Browsing;
       break;
@@ -124,7 +142,7 @@ int main() {
       mode = Mode::CreateFile;
       break;
 
-    case 'd':
+    case 'f':
       mode = Mode::CreateDirectory;
       break;
 
@@ -132,8 +150,8 @@ int main() {
       mode = Mode::Renaming;
       break;
 
-    case 's':
-      mode = Mode::ViewingStats;
+    case 'd':
+      mode = Mode::Removing;
       break;
 
     case KEY_UP:

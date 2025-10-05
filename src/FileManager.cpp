@@ -1,5 +1,6 @@
 #include "../include/FileManager.h"
 #include <algorithm>
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <system_error>
@@ -76,6 +77,21 @@ string FileManager::rename(const string &old_name, const string &new_name) {
   } catch (fs::filesystem_error const &ex) {
     return ex.code().message();
   }
+}
+
+string FileManager::remove(const string &input) {
+  auto path = current_folder / input;
+  if (!fs::exists(path)) {
+    return "Error: the file / directory does not exist (aborted).";
+  }
+
+  std::error_code ec;
+  const std::uintmax_t n = fs::remove_all(path, ec);
+  if (ec)
+    return "Error: " + ec.message();
+
+  files = list_dir(current_folder.string());
+  return "Removed " + std::to_string(n) + " files or directories.";
 }
 
 vector<string> FileManager::current_files() const { return files; }

@@ -1,4 +1,2 @@
 - Upcoming Features:
-  -   File/dir creation (mkdir, touch) with a little input dialog.
-  -   Deletion with a confirmation dialog.
   -   Copy / Move files between dirs (with a buffer for “selected item”).

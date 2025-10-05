@@ -37,8 +37,9 @@ void UI::display_help() {
   mvprintw(10, 0, "r: rename selected file / directory");
   mvprintw(11, 0, "s: display file / directory stats");
   mvprintw(12, 0, "c: create file");
-  mvprintw(13, 0, "d: create directory");
-  mvprintw(14, 0, "q: quit app");
+  mvprintw(13, 0, "f: create directory");
+  mvprintw(14, 0, "d: remove selected file / directory");
+  mvprintw(15, 0, "q: quit app");
 }
 
 void UI::display_dir(const vector<string> &files, int &highl_index) {

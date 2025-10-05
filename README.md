@@ -9,12 +9,16 @@ A TUI file explorer using std::filesystem and ncurses
 
 - Enter key: open folder
 - Backspace: go to parent directory
+- Key Up and Key Down: browse directory / browse current file
 - h: display help
 - o: toggle file viewer
 - l: toggle directory viewer
 - r: rename selected file / folder. Leave the field empty and press Enter to cancel renaming.
 - s: file status: display selected entry size (in KB or MB), permissions and modified time.
-- Key Up and Key Down: browse directory / browse current file
+- c: create file
+- f: create directory
+- d: remove file / folder
+- q: quit program
 
 ## Quick setup for testing
 

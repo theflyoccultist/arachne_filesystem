@@ -50,3 +50,8 @@ bool UI_Dialog::rename(const string &input) {
     return true;
   }
 }
+
+void UI_Dialog::confirm_removal(const string &input) {
+  mvprintw(LINES - 7, 0, "Are you sure you want to remove %s? [Y/n]",
+           input.c_str());
+}
