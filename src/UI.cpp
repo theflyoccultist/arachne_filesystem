@@ -36,7 +36,9 @@ void UI::display_help() {
   mvprintw(9, 0, "l: list directory");
   mvprintw(10, 0, "r: rename selected file / directory");
   mvprintw(11, 0, "s: display file / directory stats");
-  mvprintw(12, 0, "q: quit app");
+  mvprintw(12, 0, "c: create file");
+  mvprintw(13, 0, "d: create directory");
+  mvprintw(14, 0, "q: quit app");
 }
 
 void UI::display_dir(const vector<string> &files, int &highl_index) {
@@ -130,3 +132,5 @@ void UI::display_perms(const string &perms) {
 void UI::display_mtime(const string &time) {
   mvprintw(LINES - 5, 0, "Last modified time: %s", time.c_str());
 }
+
+void UI::show_status(const string &msg) { mvprintw(3, 0, "%s", msg.c_str()); }

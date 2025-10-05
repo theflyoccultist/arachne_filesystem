@@ -16,6 +16,9 @@ public:
 
   void enter_directory(const string &selected);
   void go_up();
+
+  string create_file(const string &input);
+  string create_directory(const string &input);
   string rename(const string &old_name, const string &new_name);
 
   vector<string> current_files() const;

@@ -16,7 +16,15 @@ int main() {
   bool running = true;
   int highl_index = 0;
 
-  enum class Mode { Help, Browsing, ViewingFile, Renaming, ViewingStats };
+  enum class Mode {
+    Help,
+    Browsing,
+    ViewingFile,
+    Renaming,
+    ViewingStats,
+    CreateFile,
+    CreateDirectory
+  };
   Mode mode = Mode::Browsing;
 
   while (running) {
@@ -41,11 +49,31 @@ int main() {
       ui.display_file();
       break;
 
+    case Mode::CreateFile: {
+      string file_name = dialog.display_dialog("New File name: ");
+      if (dialog.create_file(file_name)) {
+        auto msg = f.create_file(file_name);
+        ui.show_status(msg);
+      }
+      break;
+    }
+
+    case Mode::CreateDirectory: {
+      string dir_name = dialog.display_dialog("New Directory name: ");
+      if (dialog.create_folder(dir_name)) {
+        auto msg = f.create_directory(dir_name);
+        ui.show_status(msg);
+      }
+      break;
+    }
+
     case Mode::Renaming: {
       string old_name = files[highl_index];
       string new_name = dialog.display_dialog("Rename to: ");
-      if (dialog.rename(new_name))
-        f.rename(old_name, new_name);
+      if (dialog.rename(new_name)) {
+        auto msg = f.rename(old_name, new_name);
+        ui.show_status(msg);
+      }
       break;
     }
 
@@ -90,6 +118,14 @@ int main() {
 
     case 'l':
       mode = Mode::Browsing;
+      break;
+
+    case 'c':
+      mode = Mode::CreateFile;
+      break;
+
+    case 'd':
+      mode = Mode::CreateDirectory;
       break;
 
     case 'r':

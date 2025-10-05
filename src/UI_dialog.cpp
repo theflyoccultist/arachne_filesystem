@@ -21,6 +21,26 @@ string UI_Dialog::display_dialog(const string &prompt) {
   return input;
 }
 
+bool UI_Dialog::create_file(const string &input) {
+  if (input.empty()) {
+    mvprintw(LINES - 6, 0, "File creation has been canceled.");
+    return false;
+  } else {
+    mvprintw(LINES - 6, 0, "File created with name: %s", input.c_str());
+    return true;
+  }
+}
+
+bool UI_Dialog::create_folder(const string &input) {
+  if (input.empty()) {
+    mvprintw(LINES - 6, 0, "Folder creation has been canceled.");
+    return false;
+  } else {
+    mvprintw(LINES - 6, 0, "Folder created with name: %s", input.c_str());
+    return true;
+  }
+}
+
 bool UI_Dialog::rename(const string &input) {
   if (input.empty()) {
     mvprintw(LINES - 6, 0, "File renaming has been canceled.");

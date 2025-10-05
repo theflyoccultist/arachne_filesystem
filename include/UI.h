@@ -26,6 +26,8 @@ public:
   void display_perms(const string &perms);
   void display_mtime(const string &time);
 
+  void show_status(const string &msg);
+
 private:
   vector<string> file_contents;
   int file_offset = 0;

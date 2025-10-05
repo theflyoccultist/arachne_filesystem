@@ -1,5 +1,7 @@
 #include "../include/FileManager.h"
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
 #include <system_error>
 
 FileManager::FileManager() {
@@ -38,11 +40,39 @@ void FileManager::go_up() {
   }
 }
 
+string FileManager::create_file(const string &input) {
+  auto path = current_folder / input;
+  if (fs::exists(path)) {
+    return "Warning: file already exists (not overwritten).";
+  }
+  std::ofstream file(path);
+  if (!file.is_open()) {
+    return "Error: could not create file (permission denied?)";
+  }
+  files = list_dir(current_folder.string());
+  return "File created successfully";
+}
+
+string FileManager::create_directory(const string &input) {
+  auto path = current_folder / input;
+  if (fs::exists(path)) {
+    return "Warning: directory already exists (not overwritten).";
+  }
+
+  std::error_code ec;
+  fs::create_directories(path, ec);
+  if (ec)
+    return "Error: " + ec.message();
+
+  files = list_dir(current_folder.string());
+  return "Directory has been created successfully.";
+}
+
 string FileManager::rename(const string &old_name, const string &new_name) {
   try {
     fs::rename(current_folder / old_name, current_folder / new_name);
     files = list_dir(current_folder.string());
-    return "File renamed successfully.";
+    return "File renamed successfully";
   } catch (fs::filesystem_error const &ex) {
     return ex.code().message();
   }
