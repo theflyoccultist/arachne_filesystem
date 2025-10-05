@@ -112,33 +112,6 @@ void UI::display_file() {
   }
 }
 
-string UI::display_dialog(const string &prompt) {
-  char buf[256];
-  buf[0] = '\0';
-
-  WINDOW *win = newwin(3, 40, LINES / 2 - 1, COLS / 2 - 20);
-  box(win, 0, 0);
-  mvwprintw(win, 1, 1, "%s", prompt.c_str());
-  wrefresh(win);
-
-  echo();
-  wgetnstr(win, buf, sizeof(buf) - 1);
-  noecho();
-
-  delwin(win);
-
-  string input(buf);
-
-  if (input.empty()) {
-    mvprintw(LINES - 6, 0, "File renaming has been canceled.");
-  } else {
-    mvprintw(LINES - 6, 0, "File has been renamed to: %s", input.c_str());
-  }
-
-  mvprintw(LINES - 5, 0, "Press 'l' to go back to the directory list.");
-  return input;
-}
-
 void UI::display_path(const string &path) {
   mvprintw(LINES - 8, 0, "File Path: %s", path.c_str());
 }
@@ -157,5 +130,3 @@ void UI::display_perms(const string &perms) {
 void UI::display_mtime(const string &time) {
   mvprintw(LINES - 5, 0, "Last modified time: %s", time.c_str());
 }
-
-void UI::show_status(const string &msg) { mvprintw(3, 0, "%s", msg.c_str()); }

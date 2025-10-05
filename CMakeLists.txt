@@ -3,9 +3,10 @@ project(arachne_filesystem)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_COMPILER_VERSION 12)
 
-if (CMAKE_CXX_STANDARD LESS 20)
-  message(FATAL_ERROR "arachne_filesystem requires C++20 or higher.")
+if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
+  message(FATAL_ERROR "arachne_filesystem requires GCC 12 or later")
 endif()
 
 include_directories(include)

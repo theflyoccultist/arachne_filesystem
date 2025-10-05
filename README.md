@@ -1,6 +1,10 @@
 # arachne_filesystem
 A TUI file explorer using std::filesystem and ncurses
 
+## Requirements
+
+- GCC 12 or newer to support C++20 features.
+
 ## Controls
 
 - Enter key: open folder

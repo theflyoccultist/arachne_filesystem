@@ -1,6 +1,7 @@
 #include "../include/FileManager.h"
 #include "../include/FileStats.h"
 #include "../include/UI.h"
+#include "../include/UI_dialog.h"
 #include <ncurses.h>
 
 int main() {
@@ -10,6 +11,7 @@ int main() {
   UI ui;
   ui.setup_UI(0);
   ui.initialize_colors();
+  UI_Dialog dialog;
 
   bool running = true;
   int highl_index = 0;
@@ -41,9 +43,9 @@ int main() {
 
     case Mode::Renaming: {
       string old_name = files[highl_index];
-      string new_name = ui.display_dialog("Rename to: ");
-      auto msg = f.rename(old_name, new_name);
-      ui.show_status(msg);
+      string new_name = dialog.display_dialog("Rename to: ");
+      if (dialog.rename(new_name))
+        f.rename(old_name, new_name);
       break;
     }
 
