@@ -21,6 +21,7 @@ public:
   string create_directory(const string &input);
   string rename(const string &old_name, const string &new_name);
   string remove(const string &input);
+  string copy(const string &original, const string &copy);
 
   vector<string> current_files() const;
   fs::path current_path() const;

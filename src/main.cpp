@@ -24,7 +24,8 @@ int main() {
     CreateFile,
     CreateDirectory,
     Renaming,
-    Removing
+    Removing,
+    Copying
   };
   Mode mode = Mode::Browsing;
 
@@ -96,6 +97,16 @@ int main() {
         mvprintw(LINES - 6, 0, "Deletion canceled.");
       }
       mvprintw(LINES - 5, 0, "Press 'l' to go back to the directory list.");
+      break;
+    }
+
+    case Mode::Copying: {
+      string entry_name = dialog.display_dialog("Copy to: ");
+      if (dialog.copy(files[highl_index], entry_name)) {
+        auto msg = f.copy(files[highl_index], entry_name);
+        ui.show_status(msg);
+      }
+      break;
     }
     }
 
@@ -152,6 +163,10 @@ int main() {
 
     case 'd':
       mode = Mode::Removing;
+      break;
+
+    case 'p':
+      mode = Mode::Copying;
       break;
 
     case KEY_UP:

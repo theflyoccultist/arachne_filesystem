@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <string>
 #include <system_error>
 
 FileManager::FileManager() {
@@ -92,6 +93,37 @@ string FileManager::remove(const string &input) {
 
   files = list_dir(current_folder.string());
   return "Removed " + std::to_string(n) + " files or directories.";
+}
+
+string FileManager::copy(const string &original, const string &copy) {
+  auto path_orig = current_folder / original;
+  auto path_copy = current_folder / copy;
+
+  std::error_code ec;
+  if (fs::equivalent(path_orig, path_copy, ec)) {
+    return "Error: source and destination are the same path.";
+  }
+
+  auto copy_opts = fs::copy_options::update_existing;
+
+  if (fs::is_directory(path_orig)) {
+    if (path_copy.string().find(path_orig.string()) == 0)
+      return "Error: cannot copy a directory into itself";
+
+    copy_opts |= fs::copy_options::recursive;
+    fs::copy(path_orig, path_copy, copy_opts, ec);
+
+    if (ec)
+      return "Error: " + ec.message();
+
+  } else {
+    fs::copy(path_orig, path_copy, ec);
+
+    if (ec)
+      return "Error: " + ec.message();
+  }
+  files = list_dir(current_folder.string());
+  return "Copied: " + original + " to " + copy;
 }
 
 vector<string> FileManager::current_files() const { return files; }

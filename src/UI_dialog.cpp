@@ -5,7 +5,7 @@ string UI_Dialog::display_dialog(const string &prompt) {
   char buf[256];
   buf[0] = '\0';
 
-  WINDOW *win = newwin(3, 40, LINES / 2 - 1, COLS / 2 - 20);
+  WINDOW *win = newwin(4, 40, LINES / 2 - 1, COLS / 2 - 20);
   box(win, 0, 0);
   mvwprintw(win, 1, 1, "%s", prompt.c_str());
   wrefresh(win);
@@ -54,4 +54,15 @@ bool UI_Dialog::rename(const string &input) {
 void UI_Dialog::confirm_removal(const string &input) {
   mvprintw(LINES - 7, 0, "Are you sure you want to remove %s? [Y/n]",
            input.c_str());
+}
+
+bool UI_Dialog::copy(const string &original, const string &copy) {
+  if (copy.empty()) {
+    mvprintw(LINES - 6, 0, "Copying has been canceled.");
+    return false;
+  } else {
+    mvprintw(LINES - 6, 0, "%s has been copied to %s", original.c_str(),
+             copy.c_str());
+    return true;
+  }
 }

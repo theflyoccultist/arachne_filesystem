@@ -10,4 +10,5 @@ public:
   bool create_folder(const string &input);
   bool rename(const string &input);
   void confirm_removal(const string &input);
+  bool copy(const string &original, const string &copy);
 };
