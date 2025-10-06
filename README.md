@@ -1,6 +1,8 @@
 # arachne_filesystem
 A TUI file explorer using std::filesystem and ncurses
 
+![Preview](./public/thumb.png)
+
 ## Requirements
 
 - GCC 12 or newer to support C++20 features.
