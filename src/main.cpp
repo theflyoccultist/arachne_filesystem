@@ -25,7 +25,8 @@ int main() {
     CreateDirectory,
     Renaming,
     Removing,
-    Copying
+    Copying,
+    Moving
   };
   Mode mode = Mode::Browsing;
 
@@ -79,7 +80,7 @@ int main() {
     case Mode::Renaming: {
       string old_name = files[highl_index];
       string new_name = dialog.display_dialog("Rename to: ");
-      if (dialog.rename(new_name)) {
+      if (dialog.rename(old_name, new_name)) {
         auto msg = f.rename(old_name, new_name);
         ui.show_status(msg);
       }
@@ -104,6 +105,15 @@ int main() {
       string entry_name = dialog.display_dialog("Copy to: ");
       if (dialog.copy(files[highl_index], entry_name)) {
         auto msg = f.copy(files[highl_index], entry_name);
+        ui.show_status(msg);
+      }
+      break;
+    }
+
+    case Mode::Moving: {
+      string entry_name = dialog.display_dialog("Move to: ");
+      if (dialog.move(files[highl_index], entry_name)) {
+        auto msg = f.move(files[highl_index], entry_name);
         ui.show_status(msg);
       }
       break;
@@ -167,6 +177,10 @@ int main() {
 
     case 'p':
       mode = Mode::Copying;
+      break;
+
+    case 'm':
+      mode = Mode::Moving;
       break;
 
     case KEY_UP:

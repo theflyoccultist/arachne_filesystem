@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
-#include <string>
 #include <system_error>
 
 FileManager::FileManager() {
@@ -74,7 +73,7 @@ string FileManager::rename(const string &old_name, const string &new_name) {
   try {
     fs::rename(current_folder / old_name, current_folder / new_name);
     files = list_dir(current_folder.string());
-    return "File renamed successfully";
+    return old_name + " renamed to " + new_name;
   } catch (fs::filesystem_error const &ex) {
     return ex.code().message();
   }
@@ -124,6 +123,33 @@ string FileManager::copy(const string &original, const string &copy) {
   }
   files = list_dir(current_folder.string());
   return "Copied: " + original + " to " + copy;
+}
+
+string FileManager::move(const string &old_name, const string &new_name) {
+  auto path_orig = current_folder / old_name;
+  auto path_new = current_folder / new_name;
+  std::error_code ec;
+
+  if (fs::equivalent(path_orig, path_new, ec))
+    return "Error: source and destination are the same.";
+
+  if (fs::is_directory(path_orig))
+    path_new /= path_orig.filename();
+
+  fs::rename(path_orig, path_new, ec);
+
+  if (ec == std::errc::cross_device_link) {
+    const auto copy_opts =
+        fs::copy_options::recursive | fs::copy_options::overwrite_existing;
+    fs::copy(path_orig, path_new, copy_opts, ec);
+    fs::remove_all(path_orig, ec);
+  }
+
+  if (ec)
+    return "Error: " + ec.message();
+
+  files = list_dir(current_folder.string());
+  return old_name + " moved to " + path_new.string();
 }
 
 vector<string> FileManager::current_files() const { return files; }

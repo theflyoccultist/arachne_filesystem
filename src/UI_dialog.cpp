@@ -41,12 +41,13 @@ bool UI_Dialog::create_folder(const string &input) {
   }
 }
 
-bool UI_Dialog::rename(const string &input) {
-  if (input.empty()) {
+bool UI_Dialog::rename(const string &original, const string &new_name) {
+  if (original.empty()) {
     mvprintw(LINES - 6, 0, "File renaming has been canceled.");
     return false;
   } else {
-    mvprintw(LINES - 6, 0, "File has been renamed to: %s", input.c_str());
+    mvprintw(LINES - 6, 0, "%s has been renamed to: %s", original.c_str(),
+             new_name.c_str());
     return true;
   }
 }
@@ -63,6 +64,17 @@ bool UI_Dialog::copy(const string &original, const string &copy) {
   } else {
     mvprintw(LINES - 6, 0, "%s has been copied to %s", original.c_str(),
              copy.c_str());
+    return true;
+  }
+}
+
+bool UI_Dialog::move(const string &original, const string &new_name) {
+  if (original.empty()) {
+    mvprintw(LINES - 6, 0, "Move has been canceled.");
+    return false;
+  } else {
+    mvprintw(LINES - 6, 0, "%s has been moved to: %s", original.c_str(),
+             new_name.c_str());
     return true;
   }
 }
