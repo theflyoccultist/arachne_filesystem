@@ -40,7 +40,8 @@ void UI::display_help() {
   mvprintw(13, 0, "f: create directory");
   mvprintw(14, 0, "d: remove selected file / directory");
   mvprintw(15, 0, "p: copy file / directory");
-  mvprintw(16, 0, "q: quit app");
+  mvprintw(16, 0, "m: move file / directory");
+  mvprintw(17, 0, "q: quit app");
 }
 
 void UI::display_dir(const vector<string> &files, int &highl_index) {

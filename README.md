@@ -19,6 +19,7 @@ A TUI file explorer using std::filesystem and ncurses
 - f: create directory
 - d: remove file / folder
 - p: copy file / folder
+- m: move file / folder
 - q: quit program
 
 ## Quick setup for testing
